@@ -5,7 +5,7 @@ require 'sinatra'
 def annotate_dawg(message, colour = '#000000')
   dawg = Magick::ImageList.new("yodawg-dolls-700.jpg")
   text = Magick::Draw.new
-  text.annotate(dawg, 0, 0, 0, 60, message) {
+  text.annotate(dawg, 0, 0, 0, 60, wrap_text(message).strip) {
     self.gravity = Magick::SouthGravity
     self.pointsize = 48
     self.stroke = 'transparent'
@@ -13,23 +13,21 @@ def annotate_dawg(message, colour = '#000000')
     self.font_weight = Magick::BoldWeight
   }
   dawg.write('tmp/sup-dawg.jpg')
-  
+end
+
+def wrap_text(txt, col = 15)
+  txt.gsub(/(.{1,#{col}})( +|$\n?)|(.{1,#{col}})/, "\\1\\3\n")
 end
 
 get '/' do
-  annotate_dawg("dawg?")
   haml :index
-  
-  # send_file 'tmp/sup-dawg.jpg', :type => 'image/jpeg', :disposition => 'inline'
-end
-
-post '/' do
-  annotate_dawg(params[:message])
-  redirect '/'
 end
 
 get '/sup-dawg.jpg' do
-  annotate_dawg(params[:message])
+  message = params[:message]
+  message = 'Sup dawg?' if message.empty?
+  
+  annotate_dawg(message)
   send_file 'tmp/sup-dawg.jpg', :type => 'image/jpeg', :disposition => 'inline'
 end
 
@@ -41,8 +39,8 @@ __END__
   = yield
 
 @@ index
-%img{:src => "sup-dawg.jpg?message=#{params[:message] || 'Sup dawg?'}"}
+%img{:src => "sup-dawg.jpg?message=#{params[:message]}&colour=#{params[:colour]}"}
 
 %form{:action => '/'}
-  %input{:type => 'text', :name => 'message', :value => 'Say whaaa?'}
+  %input{:type => 'text', :name => 'message', :value => "#{params[:message] || 'Say whaaa?'}"}
   %input{:type => 'submit', :value => 'Boomshakala. Do it.'}
