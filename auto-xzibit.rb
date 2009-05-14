@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'RMagick'
 require 'sinatra'
 
 get '/' do
