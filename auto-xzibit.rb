@@ -16,6 +16,7 @@ def annotate_dawg(message)
 end
 
 get '/' do
+  annotate_dawg("dawg?")
   haml :index
   
   # send_file 'tmp/sup-dawg.jpg', :type => 'image/jpeg', :disposition => 'inline'
