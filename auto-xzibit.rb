@@ -33,9 +33,9 @@ __END__
   = yield
 
 @@ index
-  %p Yo Dawg.
-  %img{:src => 'tmp/sup-dawg.jpg'}
+%p Yo Dawg.
+%img{:src => 'tmp/sup-dawg.jpg'}
 
-  %form{:action => '/', :method => 'post'}
-    %input{:type => 'text', :name => 'message', :value => 'Your new message goes here.'}
-    %input{:type => 'submit', :value => 'Boomshakala. Do it.'}
+%form{:action => '/', :method => 'post'}
+  %input{:type => 'text', :name => 'message', :value => 'Your new message goes here.'}
+  %input{:type => 'submit', :value => 'Boomshakala. Do it.'}
